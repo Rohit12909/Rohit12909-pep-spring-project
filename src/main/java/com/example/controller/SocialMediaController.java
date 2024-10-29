@@ -34,6 +34,14 @@ public class SocialMediaController
         this.messageService = messageService;
     }
 
+    /**
+     * Register a new account if the username does not already exist in the database,
+     * the username is not blank, and if the password is >= to 4 characters
+     * @param newAccount JSON of an Account
+     * @return JSON of newly registered account and status 200, 
+     *         if duplicate username return status 409, 
+     *         else return staus 400
+     */
     @PostMapping("/register")
     public ResponseEntity<Account> register(@RequestBody Account newAccount)
     {
@@ -43,17 +51,35 @@ public class SocialMediaController
         {
             if (registered.getAccountId() == null) // newAccount had a duplicate username so a new ID was never generated
             {
-                return ResponseEntity.status(409).body(newAccount);
+                return ResponseEntity.status(409).body(newAccount); // Conflict
             }
 
-            return ResponseEntity.status(HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.OK) // register successful
                 .body(registered);
         }
-        
 
+        return ResponseEntity.status(400).body(null); // Client Error
+    }
+
+    /**
+     * Login will be successful if and only if the username and password provided in the request body JSON 
+     * match an account in the database
+     * @param existingAccount JSON of an Account
+     * @return the account with a successful login with a status 200,
+     *         else return status 401
+     */
+    @PostMapping("/login")
+    public ResponseEntity<Account> login(@RequestBody Account existingAccount)
+    {
+        Account registered = accountService.login(existingAccount);
+
+        if (registered != null) 
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(registered); // login successful
+        }
         
-        
-        return ResponseEntity.status(400).body(null);
+        return ResponseEntity.status(401).body(null); // login unauthorized
+
     }
 
     

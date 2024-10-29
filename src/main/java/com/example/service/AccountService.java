@@ -24,13 +24,16 @@ public class AccountService
     }
 
     /**
-     * 
+     * Register a new account if the username does not already exist in the database,
+     * the username is not blank, and if the password is >= to 4 characters
      * @param newAccount
-     * @return
+     * @return newly registered account
      */
     public Account register(Account newAccount) 
     {
-        if (!AccountExists(newAccount))
+        Account usernameExists = accountRepository.checkUsernameExists(newAccount.getUsername());
+
+        if (usernameExists == null)
         {
             if ((!newAccount.getUsername().isBlank()) && (newAccount.getPassword().length() >= 4))
             {   
@@ -46,24 +49,25 @@ public class AccountService
     }
 
     /**
-     * Check if an account exists in the database
-     * @param account to search for in the database
+     * Check if the username and password from the request are already in the database
+     * @param newAccount
+     * @return the already existing account
      */
-    public boolean AccountExists(Account account)
+    public Account login(Account existingAccount) 
     {
-        List<Account> allAccounts = accountRepository.findAll();
-        boolean exists = false;
+        Account usernameExists = accountRepository.checkUsernameExists(existingAccount.getUsername());
+        Account passwordExists = accountRepository.loginAccount(existingAccount.getUsername(), existingAccount.getPassword());
 
-        for (Account a : allAccounts)
+        if (usernameExists != null)
         {
-            if (account.getUsername().equals(a.getUsername()))
+            if ( passwordExists != null)
             {
-                exists = true;
-                break;
+                existingAccount.setAccountId(passwordExists.getAccountId());
+                return existingAccount;
             }
         }
 
-        return exists;
+        return null;
     }
 
     

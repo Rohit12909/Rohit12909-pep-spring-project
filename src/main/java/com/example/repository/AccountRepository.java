@@ -13,6 +13,20 @@ import org.springframework.stereotype.Repository;
 public interface AccountRepository extends JpaRepository<Account, Long>
 {
  
+    /**
+     * Check if an account with the username exists in the database
+     * @param username
+     * @return account with matching username
+     */
     @Query("FROM Account WHERE username = :usernameVar")
     Account checkUsernameExists(@Param("usernameVar") String username);
+
+    /**
+     * Check if an account with the username and password exist in the database
+     * @param username
+     * @param password
+     * @return account with matching username and password
+     */
+    @Query("FROM Account WHERE username = :usernameVar AND password = :passwordVar")
+    Account loginAccount(@Param("usernameVar") String username, @Param("passwordVar") String password);
 }
