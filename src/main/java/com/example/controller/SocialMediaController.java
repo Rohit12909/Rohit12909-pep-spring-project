@@ -1,9 +1,12 @@
 package com.example.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,6 +104,18 @@ public class SocialMediaController
         }
 
         return ResponseEntity.status(400).body(null); // Client Error
+    }
+
+    /**
+     * Get a list of all messages from the database
+     * @return a list of all messages and status 200
+     */
+    @GetMapping("/messages")
+    public ResponseEntity<List<Message>> getAllMessages()
+    {
+        List<Message> allMessages = messageService.getAllMessages();
+
+        return ResponseEntity.status(HttpStatus.OK).body(allMessages);
     }
 
     

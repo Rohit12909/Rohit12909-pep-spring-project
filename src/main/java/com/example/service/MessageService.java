@@ -46,4 +46,13 @@ public class MessageService
 
         return null;
     }
+
+    /**
+     * 
+     * @return a list of all messages
+     */
+    public List<Message> getAllMessages() 
+    {
+        return messageRepository.findAll();
+    }
 }
