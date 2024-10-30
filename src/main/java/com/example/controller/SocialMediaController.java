@@ -81,6 +81,27 @@ public class SocialMediaController
         return ResponseEntity.status(401).body(null); // login unauthorized
 
     }
+    
+    /**
+     * Create message if messageText is not blank, not over 255 characters, 
+     * and postedBy refers to a real, existing user
+     * 
+     * @param newMessage JSON of an Message
+     * @return the message with a successful login with a status 200,
+     *         else return status 400
+     */
+    @PostMapping("/messages")
+    public ResponseEntity<Message> createMessage(@RequestBody Message newMessage)
+    {
+        Message created = messageService.createMessage(newMessage);
+
+        if (created != null)
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(created); // Create Message Successful
+        }
+
+        return ResponseEntity.status(400).body(null); // Client Error
+    }
 
     
 }
