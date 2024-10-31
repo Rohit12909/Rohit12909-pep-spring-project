@@ -78,4 +78,33 @@ public class MessageService
     {
        return messageRepository.deleteMessageById(messageId);
     }
+
+    /**
+     * 
+     * @param messageId
+     * @return
+     */
+    @Transactional
+    public int updateMessageById(String newMessage, int messageId) 
+    {
+        List<Message> allMessageIds = messageRepository.findAll();
+        boolean idExists = false;
+
+        for (Message m : allMessageIds)
+        {
+            if (m.getMessageId().equals(messageId))
+            {
+                idExists = true;
+                break;
+            }
+        }
+
+        if (!newMessage.isEmpty() && !newMessage.isBlank() && newMessage.length() <= 255 && idExists)
+        {
+            System.out.println("Message Length:" + newMessage.length());
+            return messageRepository.updateMessageById(newMessage, messageId); // Message Successfully Updated
+        }
+
+        return -1; // Update was not successful
+    }
 }

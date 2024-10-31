@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -150,6 +151,30 @@ public class SocialMediaController
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    /**
+     * Update a message if and only if the message id already exists and the new messageText is not blank
+     * and is not over 255 characters
+     * @param newMessage New message that will replace the message identified by messageId
+     * @param messageId the id used to identify the message to be updated
+     * @return Number of rows updated and status 200 if conditions were met,
+     *         return status 400 otherwise
+     */
+    @PatchMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> updateMessageById(@RequestBody String newMessage, @PathVariable int messageId)
+    {
+
+        newMessage = newMessage.substring(17, newMessage.length() - 2); // Get Only the newMessage Text From the RequestBody
+
+        int rowsUpdated = messageService.updateMessageById(newMessage, messageId);
+
+        if (rowsUpdated > 0)
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(rowsUpdated); // Message Successfully Updated
+        }
+
+        return ResponseEntity.status(400).body(null);
     }
 
     

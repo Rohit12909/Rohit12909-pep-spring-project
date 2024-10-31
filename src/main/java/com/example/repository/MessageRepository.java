@@ -31,4 +31,15 @@ public interface MessageRepository  extends JpaRepository<Message, Long>
     @Modifying
     @Query("DELETE FROM Message WHERE messageId = :id")
     int deleteMessageById(@Param("id") int id);
+
+    /**
+     * Delete messages found by its id
+     * @param id the messageId used to find a message in the database
+     * @return the number of messages/rows deleted that were found by their id 
+     */
+    @Modifying
+    @Query("UPDATE Message SET messageText = :newMessage WHERE messageId = :id")
+    int updateMessageById(@Param("newMessage") String newMessage, @Param("id") int id);
+
+
 }
