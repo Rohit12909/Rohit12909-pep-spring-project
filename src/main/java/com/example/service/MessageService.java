@@ -55,4 +55,14 @@ public class MessageService
     {
         return messageRepository.findAll();
     }
+
+    /**
+     * Get a message from the database using its messageId
+     * @param messageId the messageId used to find a message in the database
+     * @return message found using its messageId
+     */
+    public Message getMessageById(int messageId) 
+    {
+        return messageRepository.getMessageById(messageId);
+    }
 }
