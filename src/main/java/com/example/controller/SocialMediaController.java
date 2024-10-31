@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -131,6 +132,24 @@ public class SocialMediaController
         Message message = messageService.getMessageById(messageId);
 
         return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+
+    /**
+     * Delete messages found by its id
+     * @param messageId the messageId used to find a message in the database
+     * @return the number of messages/rows deleted that were found by their id and return status 200
+     */
+    @DeleteMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> deleteMessageById(@PathVariable int messageId)
+    {
+        int rowsDeleted = messageService.deleteMessageById(messageId);
+
+        if (rowsDeleted > 0)
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(rowsDeleted);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     

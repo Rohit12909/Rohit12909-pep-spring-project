@@ -5,6 +5,8 @@ import com.example.repository.MessageRepository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +66,16 @@ public class MessageService
     public Message getMessageById(int messageId) 
     {
         return messageRepository.getMessageById(messageId);
+    }
+
+    /**
+     * Delete messages found by its id
+     * @param messageId the messageId used to find a message in the database
+     * @return the number of messages/rows deleted that were found by their id 
+     */
+    @Transactional
+    public int deleteMessageById(int messageId) 
+    {
+       return messageRepository.deleteMessageById(messageId);
     }
 }
