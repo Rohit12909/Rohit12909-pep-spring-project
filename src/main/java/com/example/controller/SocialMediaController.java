@@ -177,5 +177,18 @@ public class SocialMediaController
         return ResponseEntity.status(400).body(null);
     }
 
+    /**
+     * Get a list of all messages posted by a particular user
+     * @param accountId id used to find the user posting the messages
+     * @return a list of all messages posted by the user with the matching accountId and status 200
+     */
+    @GetMapping("accounts/{accountId}/messages")
+    public ResponseEntity<List<Message>> getAllMessagesFromUser(@PathVariable int accountId)
+    {
+        List<Message> allMessagesFromUser = messageService.getAllMessagesFromUser(accountId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(allMessagesFromUser);
+    }
+
     
 }

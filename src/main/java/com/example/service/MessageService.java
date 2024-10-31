@@ -107,4 +107,14 @@ public class MessageService
 
         return -1; // Update was not successful
     }
+
+    /**
+     * Get a list of all messages posted by a particular user
+     * @param accountId id used to find the user posting the messages
+     * @return a list of all messages posted by the user with the matching accountId
+     */
+    public List<Message> getAllMessagesFromUser(int accountId) 
+    {
+        return messageRepository.getAllMessagesFromUser(accountId);
+    }
 }
